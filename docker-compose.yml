@@ -1,0 +1,16 @@
+version: "3"
+
+networks:
+    default:
+
+services:
+  mssql:
+    build:
+      context: .
+    image: edwinhuish/mssql
+    container_name: mssql-server
+    ports:
+      - 1433:1433
+    restart: always
+    networks:
+      - default
