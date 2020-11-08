@@ -53,10 +53,10 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - /docker/mssql/data:/data
-      - /docker/mssql/backup:/backup
-      - /docker/mssql/log:/log
-      - /docker/mssql/dump:/dump
+      - ./workspace/data:/data
+      - ./workspace/backup:/backup
+      - ./workspace/log:/log
+      - ./workspace/dump:/dump
     restart: always
     environment:
       - TZ=Asia/Shanghai

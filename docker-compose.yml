@@ -6,11 +6,22 @@ networks:
 services:
   mssql:
     build:
-      context: .
-    image: edwinhuish/mssql
+      context: ./builder
+      args: 
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+    image: edwinhuish/mssql-server
     container_name: mssql-server
     ports:
       - 1433:1433
+    volumes:
+      - ./workspace/data:/data
+      - ./workspace/backup:/backup
+      - ./workspace/log:/log
+      - ./workspace/dump:/dump
     restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - MSSQL_SA_PASSWORD=<YourStrong!Passw0rd>
+      - MSSQL_PID=Express
     networks:
       - default
