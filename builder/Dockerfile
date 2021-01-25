@@ -24,21 +24,21 @@ RUN if [ $CONTAINER_PACKAGE_URL ] ; then \
       sed -i "s/security.ubuntu.com/${CONTAINER_PACKAGE_URL}/g" /etc/apt/sources.list ; \
       sed -i "s/archive.ubuntu.com/${CONTAINER_PACKAGE_URL}/g" /etc/apt/sources.list ; \
     fi && \
-    # 安装所需软件
+    # install requirement
     apt-get update && apt-get install -yq sudo curl apt-transport-https gnupg tzdata && \
-    # 修改time zone
+    # change time zone
     rm /etc/localtime && cp "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
-    # 添加源
+    # add source and update
     curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     curl https://packages.microsoft.com/config/ubuntu/18.04/mssql-server-2019.list | tee /etc/apt/sources.list.d/mssql-server.list && \
     apt-get update && \
-    # 安装 （ 分割，避免单个 layer 不至于太大 ）
+    # install
     apt-get install -y mssql-server && \
-    # 去除 2G 内存限制
+    # remove 2G memory requirement
     chmod +x /tmp/unlimited-memory.py && \
     python /tmp/unlimited-memory.py && \
     chmod +x /opt/mssql/bin/sqlservr && \
-    # 清除数据
+    # clear data
     apt-get clean && \
     rm -rf /var/cache/apt/archives && \
     rm -rf /var/lib/apt/lists && \
